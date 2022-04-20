@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, codeBlock, bold } = require("@discordjs/builders");
+const { SlashCommandBuilder, bold, codeBlock } = require("@discordjs/builders");
+const { MessageEmbed } = require("discord.js");
 const shop = require("../utils/shop");
 const {
   capitalizeFirstLetter,
@@ -14,6 +15,17 @@ module.exports = {
     .setDescription("Shows the shop")
     .addSubcommand(subcommand =>
       subcommand.setName("show").setDescription("Shows the shop")
+    )
+    .addSubcommand(subcommand =>
+      subcommand
+        .setName("details")
+        .setDescription("Detail a item from the shop")
+        .addStringOption(option =>
+          option
+            .setName("item")
+            .setRequired(true)
+            .setDescription("The item to show the detail")
+        )
     )
     .addSubcommand(subcommand =>
       subcommand
@@ -44,11 +56,40 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case "show": {
         const shopItems = Object.entries(shop);
-        interaction.reply(
-          `${codeBlock(
-            shopItems.map(item => `${item[0]} - ${item[1].price}`).join("\n")
-          )}`
+        const embed = new MessageEmbed()
+          .setTitle("Shop")
+          .setAuthor({
+            name: interaction.member.displayName,
+            iconURL: interaction.member.user.displayAvatarURL(),
+          })
+          .setDescription(
+            codeBlock(
+              shopItems.map(item => `${item[0]} - ${item[1].price}`).join("\n")
+            )
+          )
+          .setColor("#2f3136")
+          .setTimestamp();
+        interaction.reply({ embeds: [embed] });
+        break;
+      }
+      case "details": {
+        const itemName = capitalizeFirstLetter(
+          interaction.options.getString("item")
         );
+        const item = shop[itemName];
+        if (!item) {
+          return interaction.reply(`${bold(itemName)} is not a valid item`);
+        }
+        const embed = new MessageEmbed()
+          .setTitle(`${bold(itemName)} - ${item.price}`)
+          .setAuthor({
+            name: interaction.member.displayName,
+            iconURL: interaction.member.user.displayAvatarURL(),
+          })
+          .setDescription(item.description)
+          .setColor("#2f3136")
+          .setTimestamp();
+        interaction.reply({ embeds: [embed] });
         break;
       }
       case "buy": {

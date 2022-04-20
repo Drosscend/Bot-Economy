@@ -1,5 +1,5 @@
 const shop = {
-  LapTop: {
+  Laptop: {
     name: "Laptop",
     description:
       "A laptop is a personal computer designed to be worn on the back of the body",
