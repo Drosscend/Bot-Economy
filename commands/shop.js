@@ -12,41 +12,41 @@ const {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("shop")
-    .setDescription("Shows the shop")
+    .setDescription("Commande pour accéder au magasin")
     .addSubcommand(subcommand =>
-      subcommand.setName("show").setDescription("Shows the shop")
+      subcommand.setName("show").setDescription("Affiche le magasin")
     )
     .addSubcommand(subcommand =>
       subcommand
         .setName("details")
-        .setDescription("Detail a item from the shop")
+        .setDescription("Detail d'un item")
         .addStringOption(option =>
           option
             .setName("item")
             .setRequired(true)
-            .setDescription("The item to show the detail")
+            .setDescription("Nom de l'item")
         )
     )
     .addSubcommand(subcommand =>
       subcommand
         .setName("buy")
-        .setDescription("Buys an item")
+        .setDescription("Acheter un item")
         .addStringOption(option =>
           option
             .setName("item")
             .setRequired(true)
-            .setDescription("The item to buy")
+            .setDescription("Nom de l'item")
         )
     )
     .addSubcommand(subcommand =>
       subcommand
         .setName("sell")
-        .setDescription("Sells an item")
+        .setDescription("Vendre un item")
         .addStringOption(option =>
           option
             .setName("item")
             .setRequired(true)
-            .setDescription("The item to sell")
+            .setDescription("Nom de l'item")
         )
     ),
   async execute(interaction) {
@@ -78,7 +78,9 @@ module.exports = {
         );
         const item = shop[itemName];
         if (!item) {
-          return interaction.reply(`${bold(itemName)} is not a valid item`);
+          return interaction.reply(
+            `${bold(itemName)} n'est pas un item valide`
+          );
         }
         const embed = new MessageEmbed()
           .setTitle(`${bold(itemName)} - ${item.price}`)
@@ -98,16 +100,18 @@ module.exports = {
         );
         const item = shop[itemName];
         if (!item) {
-          return interaction.reply(`${bold(itemName)} is not a valid item`);
+          return interaction.reply(
+            `${bold(itemName)} n'est pas un item valide`
+          );
         }
         if (memberMoney < item.price) {
           return interaction.reply(
-            `You don't have enough money to buy ${bold(itemName)}`
+            `Vous n'avez pas assez d'argent pour acheter ${bold(itemName)}`
           );
         }
         buyItem(interaction.member, item);
         interaction.reply(
-          `You bought ${bold(itemName)} for ${bold(item.price)}`
+          `Vous avez acheté ${bold(itemName)} pour ${bold(item.price)}`
         );
         break;
       }
@@ -117,10 +121,12 @@ module.exports = {
         );
         const item = shop[itemName];
         if (!memberInventory.includes(itemName)) {
-          return interaction.reply(`You don't have ${bold(itemName)}`);
+          return interaction.reply(`Vous n'avez pas ${bold(itemName)}`);
         }
         sellItem(interaction.member, item);
-        interaction.reply(`You sold ${bold(itemName)} for ${bold(item.price)}`);
+        interaction.reply(
+          `Vous avez vendu ${bold(itemName)} pour ${bold(item.price)}`
+        );
         break;
       }
     }

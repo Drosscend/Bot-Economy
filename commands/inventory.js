@@ -3,13 +3,13 @@ const { MessageEmbed } = require("discord.js");
 const { getMemberInventory } = require("../utils/utilities");
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("inventory")
-    .setDescription("Get your inventory"),
+    .setName("inventaire")
+    .setDescription("Affiche votre inventaire"),
   async execute(interaction) {
     const memberInventory = await getMemberInventory(interaction.member);
     if (memberInventory == "") {
       return interaction.reply(
-        "You don't have any items in your inventory. Use `/shop buy` to buy some."
+        "Vous n'avez pas d'objets dans votre inventaire, vous pouvez en acheter en utilisant la commande `shop buy`"
       );
     }
 
@@ -34,7 +34,7 @@ module.exports = {
     }
 
     const embed = new MessageEmbed()
-      .setTitle("Your inventory")
+      .setTitle("Votre inventaire")
       .setAuthor({
         name: interaction.member.displayName,
         iconURL: interaction.member.user.displayAvatarURL(),

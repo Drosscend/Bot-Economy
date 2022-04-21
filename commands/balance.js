@@ -3,11 +3,11 @@ const { getMemberMoney } = require("../utils/utilities");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("balance")
-    .setDescription("Check your balance"),
+    .setDescription("Affiche votre solde"),
   async execute(interaction) {
     const memberMoney = await getMemberMoney(interaction.member);
     return interaction.reply(
-      `You have ${bold(memberMoney)} ${memberMoney === 1 ? "coin" : "coins"}`,
+      `You have ${bold(memberMoney)} ${memberMoney === 1 ? "coin" : "coins"}`
     );
   },
 };
