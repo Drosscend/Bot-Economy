@@ -5,7 +5,7 @@ module.exports = {
     .setName("setup")
     .setDescription("Débuter votre aventure"),
   async execute(interaction) {
-    if (checkMember(interaction.member)) {
+    if (await checkMember(interaction.member)) {
       return interaction.reply("Vous êtes déjà dans la base de données");
     }
     createMember(interaction.member);
