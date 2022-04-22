@@ -23,7 +23,7 @@ module.exports = {
     } catch (error) {
       console.error(error);
       await interaction.reply({
-        content: "There was an error while executing this command!",
+        content: "Une erreur est survenue, veuillez réessayer plus tard.",
         ephemeral: true,
       });
     }
