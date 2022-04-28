@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-// const { createMember, checkMember } = require("../utils/utilities");
+const { createMember, checkMember } = require("../utils/utilities");
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
 module.exports = {
@@ -7,10 +7,10 @@ module.exports = {
     .setName("setup")
     .setDescription("Débuter votre aventure"),
   async execute(interaction) {
-    // if (await checkMember(interaction.member)) {
-    //   return interaction.reply("Vous êtes déjà dans la base de données");
-    // }
-    // createMember(interaction.member);
+    if (!checkMember(interaction.member)) {
+      return interaction.reply("Vous êtes déjà dans la base de données");
+    }
+    createMember(interaction.member);
     const canvas = Canvas.createCanvas(700, 250);
     const context = canvas.getContext("2d");
 
